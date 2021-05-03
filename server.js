@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const path = require('path')
 require('dotenv').config()
+const passport = require('passport')
+
 const mongoose = require('mongoose')
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }, () => {console.log('mongodb connected')})
 
@@ -47,5 +49,5 @@ app.post('/leaderboard', (req,res, next) => {
     res.json({name: req.body.name, score: req.body.score})
     next()
 })
-
-app.listen(3000)
+const port = process.env.PORT || 3000
+app.listen(port, () => {console.log(`Server on port ${port}`)})
