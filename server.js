@@ -24,8 +24,19 @@ app.get('/', (req,res) => {
 })
 
 app.get('/leaderboard', (req,res) => {
-    let query = Player.find({name: 'timmy'}).exec()
-    console.log(query)
+    Player.find({}, 'name score')
+    .limit(5)
+    .exec((err, result) => {
+        if (err) {
+            console.log(err)
+        } else {
+            result.sort((a,b) => {
+                return b.score - a.score
+            })
+            console.log(result)
+            res.json(result)
+    }})
+    
 })
 
 app.post('/leaderboard', (req,res, next) => {
