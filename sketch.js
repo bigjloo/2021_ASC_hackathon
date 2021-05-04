@@ -1,116 +1,92 @@
+var screen = 0;
+var y = -20;
+var x = 200;
+var speed = 2;
+var score = 0;
 var backgroundR = 0;
 var backgroundG = 153;
 var backgroundB = 250;
-var currentScene;
-
-var click = 70;
-var timer;
-var counter = 1;
-var seconds, minutes;
+var ringSize = 0
+var ringColor= 256
 
 
 function setup() {
-
   createCanvas(680, 480);
   angleMode(DEGREES);
-  timer = createP("timer");
-  setInterval(timeIt, 1000);
-  drawScene1();
-
-
-
 }
-
-function timeIt() {
-  // 1 counter = 1 second
-  if (counter > 0) {
-    counter++;
-  }
-  
-  minutes = floor(counter/60);
-  seconds = counter % 60;
-  
-  // if (counter < 60)
-  
-  timer.html(minutes + ":" + seconds);
-}
-
-
-function mouseClicked() {
-  if (currentScene === 1) {
-        drawScene2();
-        click++;
-        
-    } 
-  else if (currentScene === 2) {
-        drawScene3();
-        click++;
-    } 
-  else
-    {
-      click++;
-    }
-  
-  
-}
-
-
-
-function drawScene1() {
-    currentScene = 1;
-    background(235, 247, 255);
-    fill(0, 85, 255);
-    //textSize(39);
-    text("Play Game",width/3,height/2);
-  
-}
-
-function drawScene2() {
-    currentScene = 2;
-    background(235, 247, 255);
-
-  
-    greeting = createElement('h2', 'what is your       name?');
-    greeting.position(240, 200);
-
-    input = createInput();
-    input.position(240, 270);
-
-    button = createButton('submit');
-    button.position(input.x + input.width, 270);
-    button.mousePressed(greet);
-
-    textAlign(CENTER);
-    textSize(50);
-  
-  
-  
-  
-}
-
 
 function draw() {
-  
-  currentScene = 3;
-  var colorConstrain = constrain(mouseY, 0, 0);
+  if (screen == 0) {
+    startScreen()
+  } else if (screen == 1) {
+    gameOn()
+  } else if (screen == 2) {
+    endScreen()
+  }
+}
 
+function startScreen() {
+  background(96, 157, 255)
+  fill(255)
+  textAlign(CENTER);
+  text('WELCOME TO MY CATCHING GAME', width / 2, height / 2)
+  text('click to start', width / 2, height / 2 + 20);
+  reset();
+}
 
+function gameOn()
+
+{
   background(backgroundR, backgroundG, backgroundB);
   fromBG = color(149, 223, 240);
   toBG = color(5, 16, 74);
   backgroundColor = lerpColor(fromBG, toBG, mouseY / height);
   background(backgroundColor);
-
-  var moonConstrainY = constrain(mouseY, 102, 540);
-
-  //Sun, moves in the Y direction as counter changes
-  noStroke();
-  fill(256, 222, 123);
   
-  ellipse( mouse, 200 + (counter)*6 - (click), 100, 100);
   
+     //Mountain ring, changes scale according to mouseX
+    noFill();
+    stroke(ringColor);
+    strokeWeight(5);
+    ringSize = constrain(mouseX, 100, 545) - 100
+    ellipse(248, 158, ringSize, ringSize);
 
+    //Secondary rings that rotate while revolving around mountain's peak,
+    //based on mouseX position
+    var spinConstraint = constrain(mouseX, 102, 540)
 
+    push();
+    translate(248, 158);
+    rotate(spinConstraint);
+    arc(248, 158, ringSize, ringSize,
+        spinConstraint + 5, spinConstraint + 115);
+    arc(248, 158, ringSize, ringSize,
+        spinConstraint + 125, spinConstraint + 235);
+    arc(248, 158, ringSize, ringSize,
+        spinConstraint + 245, spinConstraint + 355);
+    pop();
+
+    push();
+    translate(248, 158);
+    rotate(spinConstraint - 160);
+    arc(248, 158, ringSize*.75, ringSize*.75,
+        spinConstraint + 5, spinConstraint + 115);
+    arc(248, 158, ringSize*.75, ringSize*.75,
+        spinConstraint + 125, spinConstraint + 235);
+    arc(248, 158, ringSize*.75, ringSize*.75,
+        spinConstraint + 245, spinConstraint + 355);
+    pop();
+
+    //Hides rings when they get too small - given same color as background
+    if (ringSize == 0) {
+        ringColor = backgroundColor;
+    } else {
+        ringColor = 256;
+    }
+
+    noStroke();
+
+  
   //Draws triangles for mountains that change colors as         mouseX changes
 
   //Mountain 1, transitions from pink to blue
@@ -179,7 +155,7 @@ function draw() {
   triangle(108, 334, 93, 480, 253, 480);
 
 
- 
+
 
 
   //Clouds with transparency
@@ -195,9 +171,49 @@ function draw() {
   quad(353.5, 265, 393.5, 283, 353.5, 301, 313.5, 283);
 
 
-    
+  
+  text("score = " + score, 30, 20)
+  fill(255);
+  strokeWeight(0);
+  ellipse(x, y, 20, 20)
+  rectMode(CENTER)
+  rect(mouseX, height - 10, 50, 30)
+  y += speed;
+  if (y > height) {
+    screen = 2
+  }
+  if (y > height - 10 && x > mouseX - 20 && x < mouseX + 20) {
+    y = -20
+    speed += .5
+    score += 1
+  }
+  if (y == -20) {
+    pickRandom();
+  }
 }
 
+function pickRandom() {
+  x = random(20, width - 20)
+}
 
+function endScreen() {
+  background(150)
+  textAlign(CENTER);
+  text('GAME OVER', width / 2, height / 2)
+  text("SCORE = " + score, width / 2, height / 2 + 20)
+  text('click to play again', width / 2, height / 2 + 40);
+}
 
-drawScene1();
+function mousePressed() {
+  if (screen == 0) {
+    screen = 1
+  } else if (screen == 2) {
+    screen = 0
+  }
+}
+
+function reset() {
+  score = 0;
+  speed = 2;
+  y = -20;
+}
