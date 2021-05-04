@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 
 //MIDDLEWARE
-app.use('/public', express.static(path.join(__dirname, 'static')))
+app.use('/static', express.static(path.join(__dirname, 'static')))
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
     //passport for google auth
@@ -80,7 +80,6 @@ app.get('/leaderboard', (req,res) => {
             result.sort((a,b) => {
                 return b.score - a.score
             })
-            console.log(result)
             res.json(result)
     }})
     
