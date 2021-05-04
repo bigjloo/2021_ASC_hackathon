@@ -1,0 +1,22 @@
+html, body {
+  background-color:#303f9f;
+  border: 2px solid red;
+  height: 100%;
+  width: 100%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+canvas {
+  border: 2px solid green;
+}
+
+#leaderboard {
+  border: 2px solid pink;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  text-align: center;
+
+  background-color:rgb(96, 157, 255) ;
+}
