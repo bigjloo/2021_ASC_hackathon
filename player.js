@@ -5,8 +5,6 @@ const playerSchema = new mongoose.Schema({
     score: Number
 })
 
-
-
 const Player = mongoose.model('Player', playerSchema)
 
 module.exports = Player

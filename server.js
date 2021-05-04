@@ -65,9 +65,7 @@ app.get('/login_fail', (req,res) => {
     res.send('Login Failed!')
 })
 
-app.get('/good', (req,res) => {
-    res.send(`Hi ${req.user}`)
-})
+
 
 
 //Leaderboard API
@@ -88,14 +86,22 @@ app.get('/leaderboard', (req,res) => {
     
 })
 
-//POST /leaderboard
+//POST /leaderboard - Add new entry to leaderboard
 app.post('/leaderboard', (req,res, next) => {
+    // add delete lowest of 5 in leaderboard **
+
+    //add new entry to leaderboard
     const player = new Player({name: req.body.name, score: req.body.score})
     player.save(err => {
         if (err) return console.error(err)
     })
+
+    //return json of new entry
     res.json({name: req.body.name, score: req.body.score})
+    
     next()
 })
+
+//http server
 const port = process.env.PORT || 3000
 app.listen(port, () => {console.log(`Server on port ${port}`)})

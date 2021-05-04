@@ -6,7 +6,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 const userSchema = new mongoose.Schema({
     name: String,
     email: String,
-    googleID: String,
+    googleID: Number,
     topScore: Number
 })
 
