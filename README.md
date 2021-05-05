@@ -1,4 +1,4 @@
-# 2021_ASC_hackathon
+# SunCatcher - 2021 ASC Hackathon
 
 ## Presentation Canvas  
 
