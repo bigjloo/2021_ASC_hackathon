@@ -10,10 +10,10 @@ window.addEventListener("DOMContentLoaded", function(){
     }
     async function renderLeaderboard() {
         let leaderBoard = await getLeaderboard()
-        let leaderBoardHTML = ''
+        let leaderBoardHTML = '<div><u><strong>LEADERBOARD</strong></u></div>'
         let count = 1
         leaderBoard.forEach(player => {
-            leaderBoardHTML += `<div>${count}. ${player.name}, score: ${player.score}</div>` 
+            leaderBoardHTML += `<div>${count}. ${player.name}, SCORE: ${player.score}</div>` 
             count ++
         });
 
@@ -22,3 +22,4 @@ window.addEventListener("DOMContentLoaded", function(){
     
     renderLeaderboard()
 })
+

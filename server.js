@@ -72,15 +72,17 @@ app.get('/login_fail', (req,res) => {
 //GET /leaderboard
 app.get('/leaderboard', (req,res) => {
     Player.find({}, 'name score')
-    .limit(5)
     .exec((err, result) => {
         if (err) {
             console.log(err)
         } else {
+            //sort desc
             result.sort((a,b) => {
                 return b.score - a.score
             })
-            res.json(result)
+            //return top 5 
+            returnResult = result.slice(0,5)
+            res.json(returnResult)
     }})
     
 })
@@ -97,7 +99,6 @@ app.post('/leaderboard', (req,res, next) => {
 
     //return json of new entry
     res.json({name: req.body.name, score: req.body.score})
-    
     next()
 })
 

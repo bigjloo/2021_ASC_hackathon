@@ -1,6 +1,7 @@
 # 2021_ASC_hackathon
 
 ## Instructions
+From command line:
 - Clone git repo 
     > `git clone https://github.com/jloo87/2021_ASC_hackathon.git`
 - go to main directory and run command:
